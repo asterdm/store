@@ -13166,3 +13166,5 @@
 2017-11-24 22:10:57 - PHP Notice:  Error: MySQL server has gone away<br />Error No: 2006<br />SELECT * FROM oc_url_alias WHERE `query` = 'common/language/language' in /home/bh54885/public_html/system/library/db/mysqli.php on line 41
 2017-11-24 22:10:57 - PHP Notice:  Trying to get property of non-object in /home/bh54885/public_html/system/storage/modification/catalog/controller/common/seo_url.php on line 149
 2017-11-25 16:04:50 - PHP Notice:  Error: DATA not accepted from server! in /home/bh54885/public_html/system/library/mail.php on line 418
+2017-11-26 21:00:48 - PHP Notice:  Undefined variable: text_your_company in C:\OSPanel\domains\store\catalog\view\theme\akkond\template\checkout\register.tpl on line 137
+2017-11-26 21:01:15 - PHP Notice:  Undefined variable: text_your_company in C:\OSPanel\domains\store\catalog\view\theme\akkond\template\checkout\register.tpl on line 137
