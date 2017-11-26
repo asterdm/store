@@ -17,12 +17,19 @@
       <li><a href="<?php echo $download; ?>"><?php echo $text_download; ?></a></li>
       <li><a href="<?php echo $review; ?>"><?php echo $text_review; ?></a></li>
       <li><a href="<?php echo $information; ?>"><?php echo $text_information; ?></a></li>
+
+				<li><a href="<?php echo $news; ?>">Блог Новости</a></li>
+			
+
+				<li><a href="<?php echo $posts; ?>">Блог Статьи</a></li>
+			
     </ul>
   </li>
   <li id="extension"><a class="parent"><i class="fa fa-puzzle-piece fa-fw"></i> <span><?php echo $text_extension; ?></span></a>
     <ul>
       <li><a href="<?php echo $installer; ?>"><?php echo $text_installer; ?></a></li>
       <li><a href="<?php echo $modification; ?>"><?php echo $text_modification; ?></a></li>
+<li><a href="<?php echo $exchange1c; ?>">Exchange 1C 8.x</a></li>
       
 		
       <li><a href="<?php echo $module; ?>"><?php echo $text_module; ?></a></li>
@@ -162,7 +169,7 @@
       <li><a class="parent"><?php echo $text_tools; ?></a>
         <ul>
           <li><a href="<?php echo $upload; ?>"><?php echo $text_upload; ?></a></li>
-          <li><a href="<?php echo $backup; ?>"><?php echo $text_backup; ?></a></li>
+          <li><a href="<?php echo $backup; ?>"><?php echo $text_backup; ?></a></li><li><a href="<?php echo $export_import; ?>"><?php echo $text_export_import; ?></a></li>
           <li><a href="<?php echo $error_log; ?>"><?php echo $text_error_log; ?></a></li>
         </ul>
       </li>

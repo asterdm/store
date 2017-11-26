@@ -370,6 +370,30 @@ class ControllerAccountOrder extends Controller {
 				);
 			}
 
+			//Tinkoff payment
+					$status = $this->model_account_order->getOrder($this->request->get['order_id']);
+						if ( $status['order_status_id'] == '1') {
+
+					$this->load->model('checkout/order');
+					$this->load->model('payment/tinkoff');
+					$this->language->load('payment/tinkoff');
+
+					$this->session->data['order_id'] = $this->request->get['order_id'];
+
+					$order = $this->model_checkout_order->getOrder($this->request->get['order_id']);
+					$temp_sum = $this->currency->format($order['total'],$order['currency_code'],$order['currency_value'],false);
+					$sum = $this->currency->convert($temp_sum,$order['currency_code'],'RUB')*100;
+					$data['payment'] = $this->model_payment_tinkoff->initPayment(array(
+							'amount' => (int) $sum,
+							'orderId' => $this->request->get['order_id'],
+					));
+
+					$data['payButton'] = $this->language->get('pay_button');
+			}
+			//var_dump($this->session->data);die;
+
+
+
 			$data['continue'] = $this->url->link('account/order', '', 'SSL');
 
 			$data['column_left'] = $this->load->controller('common/column_left');

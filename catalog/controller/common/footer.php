@@ -1,6 +1,22 @@
 <?php
 class ControllerCommonFooter extends Controller {
 	public function index() {
+		
+		// Analytics ================================
+		$this->load->model('extension/extension');
+
+		$data['analytics'] = array();
+
+		$analytics = $this->model_extension_extension->getExtensions('analytics');
+
+		foreach ($analytics as $analytic) {
+			if ($this->config->get($analytic['code'] . '_status')) {
+				$data['analytics'][] = $this->load->controller('analytics/' . $analytic['code']);
+			}
+		}
+		// ================================
+
+
 		$this->load->language('common/footer');
 
 		$data['scripts'] = $this->document->getScripts('footer');

@@ -3,7 +3,25 @@ class ControllerCheckoutSuccess extends Controller {
 	public function index() {
 		$this->load->language('checkout/success');
 
+
 		if (isset($this->session->data['order_id'])) {
+			// Передаем транзакцию в гугл аналитикс ======
+			$transaction = [];
+			$transaction['transactionId'] = $this->session->data['order_id'];
+			$transaction_products = $this->cart->getProducts();
+			foreach ($transaction_products as $product) {
+				$transaction['transactionProducts'][] = [
+					'sku' => $product['product_id'],
+					'name' => $product['name'],
+					'price' => $product['price'],
+					'quantity' => $product['quantity'],
+				];
+			}
+			$transaction['transactionTotal'] = $this->cart->getTotal();
+			$data['transaction'] = json_encode($transaction);
+
+			// =====================================================
+
 			$this->cart->clear();
 
 			// Add to activity log

@@ -74,7 +74,7 @@ class ControllerCommonSeoUrl extends Controller {
 					} else {
 						$cat_path = false;
 						break;
-					}
+					}
 				}
 				$arg = trim($cat_path, '/');
 			} elseif ($this->request->get['route'] == 'product/manufacturer/info' && isset($this->request->get['manufacturer_id'])) {
@@ -93,7 +93,7 @@ class ControllerCommonSeoUrl extends Controller {
 			if ($query->num_rows) /**/ {
 				$this->response->redirect($query->row['keyword'] . $arg, 301);
 			} elseif ($cat_path) {
-				$this->response->redirect($arg, 301);
+				$this->response->redirect($arg, 301);
 			} 
 		}
 	}

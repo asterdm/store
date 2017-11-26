@@ -1,19 +1,7 @@
 <?php
 class ControllerCommonHeader extends Controller {
 	public function index() {
-		// Analytics
-		$this->load->model('extension/extension');
-
-		$data['analytics'] = array();
-
-		$analytics = $this->model_extension_extension->getExtensions('analytics');
-
-		foreach ($analytics as $analytic) {
-			if ($this->config->get($analytic['code'] . '_status')) {
-				$data['analytics'][] = $this->load->controller('analytics/' . $analytic['code']);
-			}
-		}
-
+		
 		if ($this->request->server['HTTPS']) {
 			$server = $this->config->get('config_ssl');
 		} else {
@@ -23,6 +11,11 @@ class ControllerCommonHeader extends Controller {
 		if (is_file(DIR_IMAGE . $this->config->get('config_icon'))) {
 			$this->document->addLink($server . 'image/' . $this->config->get('config_icon'), 'icon');
 		}
+
+		$new_link = [
+                    'href' => 'https://fonts.googleapis.com/css?family=Roboto+Condensed',
+                    'rel' => 'stylesheet'];
+                $this->document->addLink($new_link['href'],$new_link['rel']);
 
 		$data['title'] = $this->document->getTitle();
 
@@ -59,6 +52,7 @@ class ControllerCommonHeader extends Controller {
 		$data['text_shopping_cart'] = $this->language->get('text_shopping_cart');
 		$data['text_logged'] = sprintf($this->language->get('text_logged'), $this->url->link('account/account', '', 'SSL'), $this->customer->getFirstName(), $this->url->link('account/logout', '', 'SSL'));
 
+		$data['text_contact'] = $this->language->get('text_contact');
 		$data['text_account'] = $this->language->get('text_account');
 		$data['text_register'] = $this->language->get('text_register');
 		$data['text_login'] = $this->language->get('text_login');
@@ -70,6 +64,7 @@ class ControllerCommonHeader extends Controller {
 		$data['text_category'] = $this->language->get('text_category');
 		$data['text_all'] = $this->language->get('text_all');
 
+        $data['home'] = $this->url->link('contact-us');
 		$data['home'] = $this->url->link('common/home');
 		$data['wishlist'] = $this->url->link('account/wishlist', '', 'SSL');
 		$data['logged'] = $this->customer->isLogged();
@@ -84,6 +79,12 @@ class ControllerCommonHeader extends Controller {
 		$data['checkout'] = $this->url->link('checkout/checkout', '', 'SSL');
 		$data['contact'] = $this->url->link('information/contact');
 		$data['telephone'] = $this->config->get('config_telephone');
+		$data['inline_list'] = [
+                    'О компании' => '/o-kompanii-akkond',
+                    'Доставка' => '/delivery',
+                    'Оплата' => '/privacy',
+										'Контакты' => '/contact-us'
+									];
 
 		$status = true;
 

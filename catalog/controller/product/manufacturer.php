@@ -156,6 +156,15 @@ class ControllerProductManufacturer extends Controller {
 			$data['text_compare'] = sprintf($this->language->get('text_compare'), (isset($this->session->data['compare']) ? count($this->session->data['compare']) : 0));
 			$data['text_sort'] = $this->language->get('text_sort');
 			$data['text_limit'] = $this->language->get('text_limit');
+                        
+                        //Добавляем текстовые поля
+                        $data['text_img'] = $this->language->get('text_img');
+                        $data['text_sku'] = $this->language->get('text_sku');
+                        $data['text_upc'] = $this->language->get('text_upc');
+                        $data['text_ean'] = $this->language->get('text_ean');
+                        $data['text_jan'] = $this->language->get('text_jan');
+                        $data['text_isbn'] = $this->language->get('text_isbn');
+                        $data['text_mpn'] = $this->language->get('text_mpn');                        
 
 			$data['button_cart'] = $this->language->get('button_cart');
 			$data['button_wishlist'] = $this->language->get('button_wishlist');
@@ -182,7 +191,7 @@ class ControllerProductManufacturer extends Controller {
 
 			foreach ($results as $result) {
 				if ($result['image']) {
-					$image = $this->model_tool_image->resize($result['image'], $this->config->get('config_image_product_width'), $this->config->get('config_image_product_height'));
+					$image = $this->model_tool_image->resize($result['image'], $this->config->get('config_image_additional_width'), $this->config->get('config_image_additional_height'));
 				} else {
 					$image = $this->model_tool_image->resize('placeholder.png', $this->config->get('config_image_product_width'), $this->config->get('config_image_product_height'));
 				}
@@ -212,15 +221,21 @@ class ControllerProductManufacturer extends Controller {
 				}
 
 				$data['products'][] = array(
-					'product_id'  => $result['product_id'],
+					//'product_id'  => $result['product_id'],
 					'thumb'       => $image,
 					'name'        => $result['name'],
-					'description' => utf8_substr(strip_tags(html_entity_decode($result['description'], ENT_QUOTES, 'UTF-8')), 0, $this->config->get('config_product_description_length')) . '..',
+                                        'sku'         => $result['sku'],
+                                        'upc'         => $result['upc'],
+                                        'ean'         => $result['ean'],
+                                        'jan'         => $result['jan'],
+                                        'isbn'        => $result['isbn'],
+                                        'mpn'        => $result['mpn'],
+					//'description' => utf8_substr(strip_tags(html_entity_decode($result['description'], ENT_QUOTES, 'UTF-8')), 0, $this->config->get('config_product_description_length')) . '..',
 					'price'       => $price,
-					'special'     => $special,
-					'tax'         => $tax,
-					'minimum'     => $result['minimum'] > 0 ? $result['minimum'] : 1,
-					'rating'      => $result['rating'],
+					//'special'     => $special,
+					//'tax'         => $tax,
+					//'minimum'     => $result['minimum'] > 0 ? $result['minimum'] : 1,
+					//'rating'      => $result['rating'],
 					'href'        => $this->url->link('product/product', 'manufacturer_id=' . $result['manufacturer_id'] . '&product_id=' . $result['product_id'] . $url)
 				);
 			}

@@ -4,6 +4,9 @@ class ControllerCheckoutCart extends Controller {
 		$this->load->language('checkout/cart');
 
 		$this->document->setTitle($this->language->get('heading_title'));
+                $this->document->addScript('catalog/view/javascript/jquery/jquery.maskedinput.min.js');
+                $this->document->addScript('catalog/view/javascript/jquery/jqBootstrapValidation.js');
+                $data['scripts'] = $this->document->getScripts();
 
 		$data['breadcrumbs'] = array();
 
@@ -46,6 +49,12 @@ class ControllerCheckoutCart extends Controller {
 				$data['error_warning'] = '';
 			}
 
+			if ($this->customer->isLogged()) {
+				$data['showform'] = TRUE;
+			} else {
+				$data['showform'] = FALSE;
+			}
+
 			if ($this->config->get('config_customer_price') && !$this->customer->isLogged()) {
 				$data['attention'] = sprintf($this->language->get('text_login'), $this->url->link('account/login'), $this->url->link('account/register'));
 			} else {
@@ -61,6 +70,7 @@ class ControllerCheckoutCart extends Controller {
 			}
 
 			$data['action'] = $this->url->link('checkout/cart/edit', '', true);
+			$data['qformaction'] = $this->url->link('information/contact/formsending', '', true);
 
 			if ($this->config->get('config_cart_weight')) {
 				$data['weight'] = $this->weight->format($this->cart->getWeight(), $this->config->get('config_weight_class_id'), $this->language->get('decimal_point'), $this->language->get('thousand_point'));

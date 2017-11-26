@@ -3,6 +3,7 @@ class ControllerInformationContact extends Controller {
 	private $error = array();
 
 	public function index() {
+
 		$this->load->language('information/contact');
 
 		$this->document->setTitle($this->language->get('heading_title'));
@@ -18,8 +19,8 @@ class ControllerInformationContact extends Controller {
 			$mail->smtp_timeout = $this->config->get('config_mail_smtp_timeout');
 
 			$mail->setTo($this->config->get('config_email'));
-			$mail->setFrom($this->request->post['email']);
-			$mail->setSender(html_entity_decode($this->request->post['name'], ENT_QUOTES, 'UTF-8'));
+			$mail->setFrom($this->config->get('config_email'));
+			$mail->setSender(html_entity_decode($this->request->post['name'].' от '.$this->request->post['email'], ENT_QUOTES, 'UTF-8'));
 			$mail->setSubject(html_entity_decode(sprintf($this->language->get('email_subject'), $this->request->post['name']), ENT_QUOTES, 'UTF-8'));
 			$mail->setText($this->request->post['enquiry']);
 			$mail->send();
@@ -212,6 +213,11 @@ class ControllerInformationContact extends Controller {
 
 		$data['continue'] = $this->url->link('common/home');
 
+		if (isset($this->session->data['transaction'])) {
+			$data['transaction'] = $this->session->data['transaction'];
+			unset($this->session->data['transaction']);
+		}
+
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['column_right'] = $this->load->controller('common/column_right');
 		$data['content_top'] = $this->load->controller('common/content_top');
@@ -225,4 +231,64 @@ class ControllerInformationContact extends Controller {
 			$this->response->setOutput($this->load->view('default/template/common/success.tpl', $data));
 		}
 	}
+
+  public function formsending() {
+
+      $this->document->setTitle($this->language->get('heading_title'));
+      $this->load->language('information/contact');
+
+            $sendtext =" Новая заявка \n\r"
+                    . "от: " .$this->request->post['name']. "\n\r"
+                    . "телефон: ".$this->request->post['phone']." \n\r"
+                    . "почта: ".$this->request->post['email']."\n\r"
+                    . "cообщение: ".$this->request->post['message']."\n\r"
+                    . "Заявка:"."\n\r";
+
+            $products = $this->cart->getProducts();
+            foreach ($products as $product) {
+               $sendtext .= <<<EOD
+{$product['name']} : Кол-во-{$product['quantity']} Сумма-{$product['total']}
+
+EOD;
+        }
+
+			$mail = new Mail();
+			$mail->protocol = $this->config->get('config_mail_protocol');
+			$mail->parameter = $this->config->get('config_mail_parameter');
+			$mail->smtp_hostname = $this->config->get('config_mail_smtp_hostname');
+			$mail->smtp_username = $this->config->get('config_mail_smtp_username');
+			$mail->smtp_password = html_entity_decode($this->config->get('config_mail_smtp_password'), ENT_QUOTES, 'UTF-8');
+			$mail->smtp_port = $this->config->get('config_mail_smtp_port');
+			$mail->smtp_timeout = $this->config->get('config_mail_smtp_timeout');
+
+
+			$mail->setTo($this->config->get('config_email'));
+			$mail->setFrom($this->config->get('config_email'));
+			$mail->setSender(html_entity_decode($this->request->post['name'], ENT_QUOTES, 'UTF-8'));
+			$mail->setSubject(html_entity_decode(sprintf($this->language->get('email_subject'), $this->request->post['name']), ENT_QUOTES, 'UTF-8'));
+			$mail->setText($sendtext);
+
+			$mail->send();
+
+			// Передаем транзакцию в гугл аналитикс ======
+			$transaction = [];
+			$transaction['transactionId'] = time();
+			$transaction_products = $this->cart->getProducts();
+			foreach ($transaction_products as $product) {
+				$transaction['transactionProducts'][] = [
+					'sku' => $product['product_id'],
+					'name' => $product['name'],
+					'price' => $product['price'],
+					'quantity' => $product['quantity'],
+				];
+			}
+			$transaction['transactionTotal'] = $this->cart->getTotal();
+			$this->session->data['transaction'] = json_encode($transaction);
+
+			// =====================================================
+
+
+			$this->response->redirect($this->url->link('information/contact/success'));
+
+        }
 }
