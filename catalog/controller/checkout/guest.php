@@ -268,11 +268,11 @@ class ControllerCheckoutGuest extends Controller {
 			$this->session->data['account'] = 'guest';
 
 			$this->session->data['guest']['customer_group_id'] = $customer_group_id;
-			$this->session->data['guest']['firstname'] = $this->request->post['firstname'];
-			$this->session->data['guest']['lastname'] = $this->request->post['lastname'];
-			$this->session->data['guest']['email'] = $this->request->post['email'];
-			$this->session->data['guest']['telephone'] = $this->request->post['telephone'];
-			$this->session->data['guest']['fax'] = $this->request->post['fax'];
+			$this->session->data['guest']['firstname'] = isset($this->request->post['firstname']) ? $this->request->post['firstname'] : 0;
+			$this->session->data['guest']['lastname'] = isset($this->request->post['lastname']) ? $this->request->post['lastname'] : 0;
+			$this->session->data['guest']['email'] = isset($this->request->post['email']) ? $this->request->post['email'] : 0;
+			$this->session->data['guest']['telephone'] = isset($this->request->post['telephone']) ? $this->request->post['telephone'] : 0;
+			$this->session->data['guest']['fax'] = isset($this->request->post['fax']) ? $this->request->post['fax'] : 0;
 
 			if (isset($this->request->post['custom_field']['account'])) {
 				$this->session->data['guest']['custom_field'] = $this->request->post['custom_field']['account'];
@@ -280,15 +280,15 @@ class ControllerCheckoutGuest extends Controller {
 				$this->session->data['guest']['custom_field'] = array();
 			}
 
-			$this->session->data['payment_address']['firstname'] = $this->request->post['firstname'];
-			$this->session->data['payment_address']['lastname'] = $this->request->post['lastname'];
-			$this->session->data['payment_address']['company'] = $this->request->post['company'];
-			$this->session->data['payment_address']['address_1'] = $this->request->post['address_1'];
-			$this->session->data['payment_address']['address_2'] = $this->request->post['address_2'];
-			$this->session->data['payment_address']['postcode'] = $this->request->post['postcode'];
-			$this->session->data['payment_address']['city'] = $this->request->post['city'];
-			$this->session->data['payment_address']['country_id'] = $this->request->post['country_id'];
-			$this->session->data['payment_address']['zone_id'] = $this->request->post['zone_id'];
+			$this->session->data['payment_address']['firstname'] = isset($this->request->post['firstname']) ? $this->request->post['firstname'] : 0;
+			$this->session->data['payment_address']['lastname'] = isset($this->request->post['lastname']) ? $this->request->post['lastname'] : 0;
+			$this->session->data['payment_address']['company'] = isset($this->request->post['company']) ? $this->request->post['company'] : 0;
+			$this->session->data['payment_address']['address_1'] = isset($this->request->post['address_1']) ? $this->request->post['address_1'] : 0;
+			$this->session->data['payment_address']['address_2'] = isset($this->request->post['address_2']) ? $this->request->post['address_2'] : 0;
+			$this->session->data['payment_address']['postcode'] = isset($this->request->post['postcode']) ? $this->request->post['postcode'] : 0;
+			$this->session->data['payment_address']['city'] = isset($this->request->post['city']) ? $this->request->post['city'] : 0;
+			$this->session->data['payment_address']['country_id'] = isset($this->request->post['country_id']) ? $this->request->post['country_id'] : 0;
+			$this->session->data['payment_address']['zone_id'] = isset($this->request->post['zone_id']) ? $this->request->post['zone_id'] : 0;
 
 			$this->load->model('localisation/country');
 
@@ -332,15 +332,15 @@ class ControllerCheckoutGuest extends Controller {
 
 			// Default Payment Address
 			if ($this->session->data['guest']['shipping_address']) {
-				$this->session->data['shipping_address']['firstname'] = $this->request->post['firstname'];
-				$this->session->data['shipping_address']['lastname'] = $this->request->post['lastname'];
-				$this->session->data['shipping_address']['company'] = $this->request->post['company'];
-				$this->session->data['shipping_address']['address_1'] = $this->request->post['address_1'];
-				$this->session->data['shipping_address']['address_2'] = $this->request->post['address_2'];
-				$this->session->data['shipping_address']['postcode'] = $this->request->post['postcode'];
-				$this->session->data['shipping_address']['city'] = $this->request->post['city'];
-				$this->session->data['shipping_address']['country_id'] = $this->request->post['country_id'];
-				$this->session->data['shipping_address']['zone_id'] = $this->request->post['zone_id'];
+				$this->session->data['shipping_address']['firstname'] = isset($this->request->post['firstname']) ? $this->request->post['firstname'] : 0;
+				$this->session->data['shipping_address']['lastname'] = isset($this->request->post['lastname']) ? $this->request->post['lastname'] : 0;
+				$this->session->data['shipping_address']['company'] = isset($this->request->post['company']) ? $this->request->post['company'] : 0;
+				$this->session->data['shipping_address']['address_1'] = isset($this->request->post['address_1']) ? $this->request->post['address_1'] : 0;
+				$this->session->data['shipping_address']['address_2'] = isset($this->request->post['address_2']) ? $this->request->post['address_2'] : 0;
+				$this->session->data['shipping_address']['postcode'] = isset($this->request->post['postcode']) ? $this->request->post['postcode'] : 0;
+				$this->session->data['shipping_address']['city'] = isset($this->request->post['city']) ? $this->request->post['city'] : 0;
+				$this->session->data['shipping_address']['country_id'] = isset($this->request->post['country_id']) ? $this->request->post['country_id'] : 0;
+				$this->session->data['shipping_address']['zone_id'] = isset($this->request->post['zone_id']) ? $this->request->post['zone_id'] : 0;
 
 				if ($country_info) {
 					$this->session->data['shipping_address']['country'] = $country_info['name'];
