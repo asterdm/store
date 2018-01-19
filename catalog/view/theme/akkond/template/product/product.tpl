@@ -672,6 +672,9 @@ dataLayer.push({
  'gtm-ee-event-category': 'Enhanced Ecommerce',
  'gtm-ee-event-action': 'Product Details',
  'gtm-ee-event-non-interaction': 'True',
+ 'dynx_itemid': '<?= $detail['id'] ?>',
+ 'dynx_pagetype': 'product',
+ 'dynx_totalvalue': '<?= $detail['price'] ?>',
 });
 </script>
 <?php echo $footer; ?>
