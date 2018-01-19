@@ -6,7 +6,6 @@
     <li itemprop="itemListElement" itemscope
       itemtype="http://schema.org/ListItem"><a itemprop="item" href="<?php echo $breadcrumb['href']; ?>"><span itemprop="name"><?php echo $breadcrumb['text']; ?></span></a>
       <meta itemprop="position" content="<?php print $i++; ?>" />
-
     </li>
     <?php } ?>
   </ul>
@@ -131,7 +130,7 @@
                 <?php } ?>
               </div>
               <div class="button-group">
-                <button type="button" data-toggle="tooltip" title="Цена за гофро-коробку" onclick="cart.add('<?php echo $product['product_id']; ?>', '<?php echo $product['minimum']; ?>');"><i class="fa fa-shopping-cart"></i> <span class="hidden-xs hidden-sm hidden-md"><?php echo $button_cart; ?></span></button>
+                <button type="button" data-toggle="tooltip" title="Цена за гофро-коробку" onclick="cart.add('<?php echo $product['']; ?>', '<?php echo $product['minimum']; ?>');">product_id<i class="fa fa-shopping-cart"></i> <span class="hidden-xs hidden-sm hidden-md"><?php echo $button_cart; ?></span></button>
                 <button type="button" data-toggle="tooltip" title="<?php echo $button_wishlist; ?>" onclick="wishlist.add('<?php echo $product['product_id']; ?>');"><i class="fa fa-heart"></i></button>
                 <button type="button" data-toggle="tooltip" title="<?php echo $button_compare; ?>" onclick="compare.add('<?php echo $product['product_id']; ?>');"><i class="fa fa-exchange"></i></button>
               </div>
@@ -154,4 +153,49 @@
       <?php echo $content_bottom; ?></div>
     <?php echo $column_right; ?></div>
 </div>
+<?php 
+    // подготовим массив для передачи в datalayer
+    if (isset($breadcrumbs)){
+        $breadcrumbs[0]['text']= 'Каталог';
+        $dl_category = '';
+        foreach ($breadcrumbs as $breadcrumb){
+            $dl_category .= $breadcrumb['text'].'/';
+            $dl_list = $breadcrumb['text'];
+        }
+    }
+     else $dl_category = 'Каталог';
+     
+    if (isset($product)){
+        $impressions = [];
+        $k = 1;
+        foreach ($products as $product){
+            $impressions[]=[
+                'name' => $product['name'],
+                'id' => $product['product_id'],
+                'price' => preg_replace('/\..*/', '',$product['price']),
+                'brand' => 'Akkond',
+                'category' => $dl_category,
+                'variant' => $product['weight'],
+                'list' => $dl_list,
+                'position' => $k,
+            ] ;
+            $k++;
+        }
+    }
+        else $impressions = 0;
+?>
+<script>
+window.dataLayer = window.dataLayer || [];
+dataLayer.push({
+ 'ecommerce': {
+   'currencyCode': 'RUB',
+   'impressions': <?= json_encode($impressions) ?>
+ },
+ 'event': 'gtm-ee-event',
+ 'gtm-ee-event-category': 'Enhanced Ecommerce',
+ 'gtm-ee-event-action': 'Product Impressions',
+ 'gtm-ee-event-non-interaction': 'True',
+});
+</script>
+
 <?php echo $footer; ?>
