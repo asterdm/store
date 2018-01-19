@@ -217,7 +217,7 @@ $('select[name=\'category_id\']').trigger('change');
     }
      else $dl_category = 'Каталог';
      
-    if (isset($product)){
+    if (isset($products)){
         $impressions = [];
         $k = 1;
         foreach ($products as $product){

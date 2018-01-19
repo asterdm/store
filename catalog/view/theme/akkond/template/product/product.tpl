@@ -636,4 +636,42 @@ $(document).ready(function() {
 	});
 });
 //--></script>
+<?php 
+     // подготовим массив для передачи в datalayer
+    if (isset($breadcrumbs)){
+        $breadcrumbs[0]['text']= 'Каталог';
+        $dl_category = '';
+        foreach ($breadcrumbs as $breadcrumb){
+            $dl_category .= $breadcrumb['text'].'/';
+            $dl_list = $breadcrumb['text'];
+        }
+    }
+     else $dl_category = 'Каталог';
+     
+    if (isset($products)){
+        $detail = [
+                'name' => $heading_title,
+                'id' => $product_id,
+                'price' => preg_replace('/\..*/', '',$price),
+                'brand' => 'Akkond',
+                'category' => $dl_category,
+                'variant' => $weight,
+            ];
+
+    }
+        else $detail = 0;
+?>
+<script>
+window.dataLayer = window.dataLayer || [];
+dataLayer.push({
+ 'ecommerce': {
+   'currencyCode': 'RUB',
+   'detail': <?= json_encode($detail) ?>
+ },
+ 'event': 'gtm-ee-event',
+ 'gtm-ee-event-category': 'Enhanced Ecommerce',
+ 'gtm-ee-event-action': 'Product Details',
+ 'gtm-ee-event-non-interaction': 'True',
+});
+</script>
 <?php echo $footer; ?>
